@@ -2,11 +2,7 @@ import React from "react";
 import Search from "../components/Search";
 
 const searchPage = () => {
-  return (
-    <div>
-      <Search />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default searchPage;

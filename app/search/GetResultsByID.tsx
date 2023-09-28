@@ -4,10 +4,6 @@ import axios from "axios";
 
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 
-interface Video {
-  // Define the structure of a video
-}
-
 interface SearchParams {
   q?: string;
   regionCode?: "US" | "CA" | "UK" | "AU" | "DE";
@@ -56,6 +52,12 @@ const Search: React.FC = () => {
 
   return (
     <div>
+      <input
+        type="text"
+        placeholder="Type here"
+        className="input input-bordered input-error w-full max-w-xs"
+      />
+      hi
       <input
         type="text"
         placeholder="Enter search query"
