@@ -1,9 +1,12 @@
+"use client";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import QueryItems from "./QueryItems";
+import FrequencyChart from "./FrequencyChart";
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 
-const YoutubeChannelInput = () => {
+const TubeTrends = () => {
   // when typed into input
   const [input, setInput] = useState("");
 
@@ -37,14 +40,9 @@ const YoutubeChannelInput = () => {
           },
         }
       );
-      const youtuber = response.data.items[0];
+      const youtubeChannel = response.data.items[0].snippet;
 
-      const title = youtuber.snippet.title;
-      const channelID = youtuber.snippet.channelId;
-      const publishedDate = youtuber.snippet.publishedAt;
-      const thumbnail = youtuber.snippet.thumbnails.default.url;
-      console.log(`new youtuber created : ${youtuber}`);
-      return { title, channelID, publishedDate, thumbnail };
+      return youtubeChannel;
     } catch (error) {
       setError("Error fetching YouTube data. Please try again later.");
       console.error("Error fetching YouTube data:", error);
@@ -54,7 +52,6 @@ const YoutubeChannelInput = () => {
   };
 
   const fetchChannelVideos = async (channelID: string) => {
-    console.log(channelID);
     setLoading(true);
     setError(null);
 
@@ -86,17 +83,31 @@ const YoutubeChannelInput = () => {
     }
   };
 
-  const addToQueryList = async () => {
+  const createYoutuber = (youtubeChannel) => {
+    console.log(youtubeChannel);
+
+    const title = youtubeChannel.title;
+    const channelID = youtubeChannel.channelId;
+    const publishedDate = youtubeChannel.publishedAt;
+    const thumbnail = youtubeChannel.thumbnails.default.url;
+    const youtuber = { title, channelID, publishedDate, thumbnail };
+
+    return youtuber;
+  };
+
+  const addToQueryList = async (e) => {
+    e.preventDefault();
     if (input.trim() !== "") {
       const channel = await fetchYouTubeChannel(input);
-      console.log(channel);
+      const youtuber = createYoutuber(channel);
+      console.log(youtuber);
 
       const newQueryItem = {
         id: uuidv4(), // Generate a unique identifier
         query: input,
-        title: channel?.title,
-        channelID: channel?.channelID,
-        thumbnail: channel?.thumbnail,
+        title: youtuber?.title,
+        channelID: youtuber?.channelID,
+        thumbnail: youtuber?.thumbnail,
       };
 
       console.log(`new query item: ${JSON.stringify(newQueryItem)}`);
@@ -105,8 +116,6 @@ const YoutubeChannelInput = () => {
       setInput("");
     }
   };
-
-  // const searchAllQueryItems
 
   const getWeekDayLog = (date: string) => {
     // Output the date string for debugging
@@ -124,13 +133,20 @@ const YoutubeChannelInput = () => {
     return daysOfWeek[dayOfWeek];
   };
 
-  const getUploadFrequencyByWeekDay = async () => {
-    const response = await fetchChannelVideos(channelID);
-    console.log(response);
-    if (!response) {
-      return;
+  const searchQueryInputs = async () => {
+    if (!queryList) return;
+
+    for (const query of queryList) {
+      try {
+        const channelVideos = await fetchChannelVideos(query.channelID);
+        console.log(channelVideos);
+      } catch (error) {}
+      // Process channelVideos here
     }
-    setVideoList(response);
+  };
+
+  const analyzeVideos = (videoList) => {
+    setVideoList(videoList);
     const dayCount = {
       Sun: 0,
       Mon: 0,
@@ -140,7 +156,7 @@ const YoutubeChannelInput = () => {
       Fri: 0,
       Sat: 0,
     };
-    response.forEach((video) => {
+    videoList.forEach((video) => {
       const weekDay = getWeekDayLog(video.snippet.publishedAt);
       console.log(weekDay);
       // Increment the count for the corresponding day of the week
@@ -152,21 +168,28 @@ const YoutubeChannelInput = () => {
     setFreQuencyByDay(dayCount);
     return dayCount;
   };
+
   return (
-    <div>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-      />
-      <button className="btn btn-primary" onClick={addToQueryList}>
-        Add to query
-      </button>
-      <button className="btn btn-primary">Search Query</button>
-    </div>
+    <>
+      <form>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+        />
+        <button className="btn " onClick={addToQueryList}>
+          Add to query
+        </button>
+        <button className="btn " onClick={searchQueryInputs}>
+          Search Query
+        </button>
+      </form>
+      <QueryItems queryList={queryList} setQueryList={setQueryList} />
+      <FrequencyChart />
+    </>
   );
 };
 
-export default YoutubeChannelInput;
+export default TubeTrends;
