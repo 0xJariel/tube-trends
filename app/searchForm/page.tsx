@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import YoutubeChannelInput from "./YoutubeChannelInput";
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 
 function SearchForm() {
@@ -62,6 +63,8 @@ function SearchForm() {
     }
   };
 
+  const handleNewQuery = () => {};
+
   const searchForUsernames = async () => {
     const response = await fetchYouTubeChannels(newQuery);
     console.log(response);
@@ -69,7 +72,7 @@ function SearchForm() {
     setChannelID(response[0].channelID);
   };
 
-  const getWeekDay = (date: string) => {
+  const getWeekDayLog = (date: string) => {
     // Output the date string for debugging
     console.log("Date String:", date);
 
@@ -135,7 +138,7 @@ function SearchForm() {
       Sat: 0,
     };
     response.forEach((video) => {
-      const weekDay = getWeekDay(video.snippet.publishedAt);
+      const weekDay = getWeekDayLog(video.snippet.publishedAt);
       console.log(weekDay);
       // Increment the count for the corresponding day of the week
       if (dayCount.hasOwnProperty(weekDay)) {
@@ -173,6 +176,7 @@ function SearchForm() {
         id: uuidv4(), // Generate a unique identifier
         query: newQuery,
       };
+
       setQueryList([...queryList, newItem]);
       setNewQuery("");
     }
@@ -184,11 +188,18 @@ function SearchForm() {
     console.log("hi");
   };
 
-  const searchQuery = () => {};
+  const searchQueryList = (queryList) => {
+    if (!queryList) {
+      console.log("no queryList to search");
+    }
+    queryList.forEach((query) => {});
+  };
 
   return (
     <>
       <form onSubmit={handleSubmit} className="flex gap-2">
+        <YoutubeChannelInput />
+
         <input type="text" onChange={handleInputChange} value={newQuery} />
         <div className="btn btn-primary" onClick={searchForUsernames}>
           Search
