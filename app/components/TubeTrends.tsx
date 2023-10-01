@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import QueryItems from "./QueryItems";
-import FrequencyChart from "./FrequencyChart";
+import DayFrequencyChart from "./DayFrequencyChart";
+import TimeFrequencyChart from "./TimeFrquencyChart";
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 
 const TubeTrends = () => {
@@ -20,6 +21,9 @@ const TubeTrends = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
+
+  // after analysis video data
+  const [analyzedData, setAnalyzedData] = useState([]);
 
   //   gets the closest match in relevance || need to make exact matched work
   const fetchYouTubeChannel = async (channelName: string) => {
@@ -118,9 +122,6 @@ const TubeTrends = () => {
   };
 
   const getWeekDayLog = (date: string) => {
-    // Output the date string for debugging
-    console.log("Date String:", date);
-
     // Create a Date object with the provided date string
     const dateObject = new Date(date);
 
@@ -133,20 +134,33 @@ const TubeTrends = () => {
     return daysOfWeek[dayOfWeek];
   };
 
-  const searchQueryInputs = async () => {
+  // updates 'analyzedData' with an array of objects that has title & daycount keys
+  const searchQueryInputs = async (e) => {
+    setAnalyzedData([]);
+    e.preventDefault();
     if (!queryList) return;
-
+    let newData = [];
     for (const query of queryList) {
       try {
         const channelVideos = await fetchChannelVideos(query.channelID);
-        console.log(channelVideos);
+        const dayCount = getDayCount(channelVideos);
+        const timeCount = getTimeCount(channelVideos);
+        const channelData = { title: query.title, dayCount, timeCount };
+        newData.push(channelData);
+        console.log(timeCount);
+
+        // create
+        console.log(
+          `query: ${JSON.stringify(query.title)}, daycount: ${JSON.stringify(
+            dayCount
+          )}`
+        );
       } catch (error) {}
-      // Process channelVideos here
     }
+    setAnalyzedData(newData);
   };
 
-  const analyzeVideos = (videoList) => {
-    setVideoList(videoList);
+  const getDayCount = (videoList) => {
     const dayCount = {
       Sun: 0,
       Mon: 0,
@@ -158,7 +172,6 @@ const TubeTrends = () => {
     };
     videoList.forEach((video) => {
       const weekDay = getWeekDayLog(video.snippet.publishedAt);
-      console.log(weekDay);
       // Increment the count for the corresponding day of the week
       if (dayCount.hasOwnProperty(weekDay)) {
         dayCount[weekDay]++;
@@ -167,6 +180,40 @@ const TubeTrends = () => {
     console.log(dayCount);
     setFreQuencyByDay(dayCount);
     return dayCount;
+  };
+
+  const getTimeCount = (videoList) => {
+    const timeCount = {};
+
+    for (let hour = 0; hour <= 23; hour++) {
+      const formattedHour = hour.toString().padStart(2, "0");
+      timeCount[`${formattedHour}:00`] = 0;
+    }
+
+    console.log(timeCount);
+
+    videoList.forEach((video) => {
+      const publishedTime = new Date(video.snippet.publishedAt);
+      const hours = publishedTime.getUTCHours();
+      const roundedHours = Math.round(hours); // Round the hours to the nearest hour
+
+      // Format the time as "HH:00"
+      const formattedTime = `${roundedHours.toString().padStart(2, "0")}:00`;
+
+      // Increment the count for the corresponding time slot
+      if (timeCount.hasOwnProperty(formattedTime)) {
+        timeCount[formattedTime]++;
+      } else {
+        timeCount[formattedTime] = 1;
+      }
+    });
+
+    console.log(timeCount);
+
+    // You can set timeCount state if needed
+    // setFrequencyByTime(timeCount);
+
+    return timeCount;
   };
 
   return (
@@ -187,7 +234,8 @@ const TubeTrends = () => {
         </button>
       </form>
       <QueryItems queryList={queryList} setQueryList={setQueryList} />
-      <FrequencyChart />
+      <DayFrequencyChart analyzedData={analyzedData} />
+      <TimeFrequencyChart analyzedData={analyzedData} />
     </>
   );
 };
