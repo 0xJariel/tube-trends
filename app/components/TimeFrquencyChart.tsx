@@ -51,10 +51,18 @@ const TimeFrequencyChart = ({ analyzedData }) => {
   const options = {};
   return (
     <div>
-      <div>Upload Time:</div>
-      <div>{analyzedData && <Bar data={data} options={options} />}</div>
+      {analyzedData.length > 0 ? (
+        <div className="grid">
+          <div className="mx-auto">Upload Times (UTC):</div>
+          <div>
+            <Bar data={data} options={options} />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
 
 export default TimeFrequencyChart;
+
+

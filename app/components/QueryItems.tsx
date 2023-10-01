@@ -8,7 +8,7 @@ const QueryItems = ({ queryList, setQueryList }) => {
   };
 
   return (
-    <div>
+    <div className="grid grid-cols-2">
       {queryList &&
         queryList.map((searchItem) => {
           return (

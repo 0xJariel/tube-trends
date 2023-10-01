@@ -101,6 +101,7 @@ const TubeTrends = () => {
 
   const addToQueryList = async (e) => {
     e.preventDefault();
+    if (queryList.length >= 4) return;
     if (input.trim() !== "") {
       const channel = await fetchYouTubeChannel(input);
       const youtuber = createYoutuber(channel);
@@ -190,8 +191,6 @@ const TubeTrends = () => {
       timeCount[`${formattedHour}:00`] = 0;
     }
 
-    console.log(timeCount);
-
     videoList.forEach((video) => {
       const publishedTime = new Date(video.snippet.publishedAt);
       const hours = publishedTime.getUTCHours();
@@ -217,26 +216,30 @@ const TubeTrends = () => {
   };
 
   return (
-    <>
-      <form>
+    <div className="app grid justify-center gap-6">
+      <form className="flex gap-2">
         <input
           type="text"
+          placeholder="Search YouTuber..."
+          className="input input-bordered w-full "
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
           }}
         />
         <button className="btn " onClick={addToQueryList}>
-          Add to query
+          Add Channel
         </button>
         <button className="btn " onClick={searchQueryInputs}>
-          Search Query
+          Analyze
         </button>
       </form>
-      <QueryItems queryList={queryList} setQueryList={setQueryList} />
-      <DayFrequencyChart analyzedData={analyzedData} />
-      <TimeFrequencyChart analyzedData={analyzedData} />
-    </>
+      <div className="max-w-lg gap-6 ">
+        <QueryItems queryList={queryList} setQueryList={setQueryList} />
+        <DayFrequencyChart analyzedData={analyzedData} />
+        <TimeFrequencyChart analyzedData={analyzedData} />
+      </div>
+    </div>
   );
 };
 
