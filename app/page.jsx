@@ -11,8 +11,6 @@ export default function Home() {
           <BsYoutube />
         </span>
         YouWhen
-        {process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}
-        {process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}
       </div>
       <div className="grid mx-auto pb-6">
         <div className="text-2xl font-medium">
