@@ -26,7 +26,7 @@ const TubeTrends = () => {
   const [analyzedData, setAnalyzedData] = useState([]);
 
   //   gets the closest match in relevance || need to make exact matched work
-  const fetchYouTubeChannel = async (channelName: string) => {
+  const fetchYouTubeChannel = async (channelName) => {
     setLoading(true);
     setError(null);
 
@@ -55,7 +55,7 @@ const TubeTrends = () => {
     }
   };
 
-  const fetchChannelVideos = async (channelID: string) => {
+  const fetchChannelVideos = async (channelID) => {
     setLoading(true);
     setError(null);
 
@@ -122,7 +122,7 @@ const TubeTrends = () => {
     }
   };
 
-  const getWeekDayLog = (date: string) => {
+  const getWeekDayLog = (date) => {
     // Create a Date object with the provided date string
     const dateObject = new Date(date);
 

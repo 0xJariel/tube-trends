@@ -6,28 +6,13 @@ import {
   LinearScale,
   Tooltip,
   Legend,
-  ChartData,
 } from "chart.js";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 import { Bar } from "react-chartjs-2";
 
-// Define an interface for the structure of analyzedData objects
-interface AnalyzedDataItem {
-  title: string;
-  dayCount: Record<string, number>; // Assuming dayCount is an object with string keys and number values
-}
-
-interface DayFrequencyChartProps {
-  analyzedData: AnalyzedDataItem[];
-}
-
-const DayFrequencyChart: React.FC<DayFrequencyChartProps> = ({
-  analyzedData,
-}) => {
-  const createChartDatasets = (
-    data: AnalyzedDataItem[] | null
-  ): Chart.ChartData<"bar", number[], string> | null => {
+const DayFrequencyChart = ({ analyzedData }) => {
+  const createChartDatasets = (data) => {
     if (!data || data.length === 0) {
       return null; // Return null or handle empty data
     }
@@ -37,13 +22,7 @@ const DayFrequencyChart: React.FC<DayFrequencyChartProps> = ({
     const backgroundColors = ["aqua", "red", "purple", "green"];
     const borderColor = ["black", "black", "black", "black"];
 
-    const datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string;
-      borderColor: string;
-      borderWidth: number;
-    }[] = [];
+    const datasets = [];
 
     data.forEach((query, index) => {
       datasets.push({
@@ -59,7 +38,7 @@ const DayFrequencyChart: React.FC<DayFrequencyChartProps> = ({
 
   const data = createChartDatasets(analyzedData);
 
-  const options = {}; // You can define options with the appropriate type
+  const options = {}; // You can define options as needed
 
   return (
     <div>
