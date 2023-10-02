@@ -13,8 +13,9 @@ export default function Home() {
         YouWhen
       </div>
       <div className="grid mx-auto pb-6">
-        <div>Find out when your favorite channels post!</div>
-        <div className="mx-auto">~last 50 videos~</div>
+        <div className="text-2xl font-medium">
+          Analyze a Youtubers last 50 videos!
+        </div>
       </div>
       <TubeTrends />
     </main>
