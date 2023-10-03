@@ -221,7 +221,7 @@ const TubeTrends = () => {
         <input
           type="text"
           placeholder="Search YouTuber..."
-          className="input input-bordered w-full "
+          className="url_input input input-bordered w-full "
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
