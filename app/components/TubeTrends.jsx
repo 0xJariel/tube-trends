@@ -216,7 +216,7 @@ const TubeTrends = () => {
   };
 
   return (
-    <div className="app grid justify-center gap-6">
+    <div className="app grid gap-6">
       <form className="flex gap-2">
         <input
           type="text"
@@ -234,10 +234,12 @@ const TubeTrends = () => {
           Analyze
         </button>
       </form>
-      <div className="max-w-lg gap-6 ">
+      <div className="grid">
         <QueryItems queryList={queryList} setQueryList={setQueryList} />
-        <DayFrequencyChart analyzedData={analyzedData} />
-        <TimeFrequencyChart analyzedData={analyzedData} />
+        <div className=" grid pt-8 gap-6 sm:flex">
+          <DayFrequencyChart analyzedData={analyzedData} />
+          <TimeFrequencyChart analyzedData={analyzedData} />
+        </div>
       </div>
     </div>
   );

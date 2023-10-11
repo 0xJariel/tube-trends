@@ -52,10 +52,18 @@ const TimeFrequencyChart = ({ analyzedData }) => {
   return (
     <div>
       {analyzedData.length > 0 ? (
-        <div className="grid">
-          <div className="mx-auto">Upload Times (UTC):</div>
-          <div>
-            <Bar data={data} options={options} />
+        <div className="grid shadow-xl rounded-lg">
+          <div className="grid bg-white rounded-lg p-5">
+            <div className="mx-auto">Upload Times (UTC):</div>
+            <div>
+              <Bar
+                className=""
+                data={data}
+                width={"439px"}
+                height={"220px"}
+                options={{ maintainAspectRatio: false }}
+              />
+            </div>
           </div>
         </div>
       ) : null}

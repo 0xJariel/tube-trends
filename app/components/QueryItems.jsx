@@ -8,13 +8,13 @@ const QueryItems = ({ queryList, setQueryList }) => {
   };
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="flex flex-wrap mx-auto max-w-2xl">
       {queryList &&
         queryList.map((searchItem) => {
           return (
             <button
               key={searchItem.id}
-              className="btn flex"
+              className="btn"
               onClick={(e) => removeFromQueryList(searchItem.id)} // Pass the id to remove
               style={{ cursor: "pointer" }}
             >

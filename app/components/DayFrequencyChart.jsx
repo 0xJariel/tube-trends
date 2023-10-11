@@ -43,10 +43,18 @@ const DayFrequencyChart = ({ analyzedData }) => {
   return (
     <div>
       {analyzedData.length > 0 ? (
-        <div className="grid">
-          <div className="mx-auto">Upload Days:</div>
-          <div>
-            <Bar data={data} options={options} />
+        <div className="grid shadow-xl rounded-lg">
+          <div className="grid bg-white rounded-lg p-5">
+            <div className="">Upload Days:</div>
+            <div>
+              <Bar
+                className=""
+                data={data}
+                width={"300px"}
+                height={"220px"}
+                options={{ maintainAspectRatio: false }}
+              />
+            </div>
           </div>
         </div>
       ) : null}
