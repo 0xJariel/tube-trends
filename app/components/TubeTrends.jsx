@@ -240,7 +240,7 @@ const TubeTrends = () => {
         <div className=" grid pt-8 gap-6 sm:flex">
           <DayFrequencyChart analyzedData={analyzedData} />
           <TimeFrequencyChart analyzedData={analyzedData} />
-          <TopFiveTable />
+          {/* <TopFiveTable /> */}
         </div>
       </div>
     </div>
