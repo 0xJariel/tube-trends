@@ -5,6 +5,7 @@ import axios from "axios";
 import QueryItems from "./QueryItems";
 import DayFrequencyChart from "./DayFrequencyChart";
 import TimeFrequencyChart from "./TimeFrquencyChart";
+import TopFiveTable from "./TopFiveTable";
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 
 const TubeTrends = () => {
@@ -239,6 +240,7 @@ const TubeTrends = () => {
         <div className=" grid pt-8 gap-6 sm:flex">
           <DayFrequencyChart analyzedData={analyzedData} />
           <TimeFrequencyChart analyzedData={analyzedData} />
+          <TopFiveTable />
         </div>
       </div>
     </div>
