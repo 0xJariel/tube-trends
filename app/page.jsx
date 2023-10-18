@@ -8,12 +8,12 @@ export default function Home() {
     <main className="grid w-full">
       <div className="gradient"></div>
       <div className="grid  ">
-        <h1 className=" p-6 head_text">
+        {/* <h1 className=" p-6 head_text">
           Analyze Youtuber upload data with <br />
           <span className=" orange_gradient">YouWhen</span>
-        </h1>
+        </h1> */}
         <div className="grid pb-6">
-          <div className="text-2xl font-medium px-4 text-center">
+          <div className="text-2xl font-medium px-4 text-center pt-6">
             Add up to four youtubers and analyze their recent upload data!
           </div>
         </div>
